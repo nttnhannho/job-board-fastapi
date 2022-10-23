@@ -24,8 +24,11 @@ passlib[bcrypt]
 pytest
 requests
 
-#for  cleaning up codebase on each commit
+# for  cleaning up codebase on each commit
 pre-commit
 
-#seedir to print tree structure of folders
+# seedir to print tree structure of folders
 seedir
+
+# for authentication
+python-jose
