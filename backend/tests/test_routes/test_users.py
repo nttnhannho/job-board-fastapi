@@ -1,5 +1,7 @@
 import json
 
+from fastapi import status
+
 
 def test_create_user(client):
     data = {
@@ -10,6 +12,6 @@ def test_create_user(client):
 
     response = client.post("/users", data=json.dumps(data))
 
-    assert response.status_code == 200
+    assert response.status_code == status.HTTP_200_OK
     assert response.json()["email"] == "test_email@test.com"
     assert response.json()["is_active"] is True
