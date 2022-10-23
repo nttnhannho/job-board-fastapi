@@ -1,29 +1,26 @@
-import sys
 import os
-from typing import Any, Generator
+import sys
+from typing import Any
+from typing import Generator
 
 import pytest
-
-from fastapi import FastAPI
-from fastapi.testclient import TestClient
-
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-
+from apis.base import api_router
 from db.base import Base
 from db.session import get_db
-
-from apis.base import api_router
+from fastapi import FastAPI
+from fastapi.testclient import TestClient
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-SQLALCHEMY_DATABASE_URL = 'sqlite:///./test_job_board_db.db'
+SQLALCHEMY_DATABASE_URL = "sqlite:///./test_job_board_db.db"
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
     connect_args={
-        'check_same_thread': False,
-    }
+        "check_same_thread": False,
+    },
 )
 
 SessionTesting = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -36,7 +33,7 @@ def start_application():
     return app
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope="function")
 def app() -> Generator[FastAPI, Any, None]:
     Base.metadata.create_all(engine)
     app_ = start_application()
@@ -44,7 +41,7 @@ def app() -> Generator[FastAPI, Any, None]:
     Base.metadata.drop_all(engine)
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope="function")
 def db_session(app: FastAPI) -> Generator[SessionTesting, Any, None]:
     connection = engine.connect()
     transaction = connection.begin()
@@ -55,7 +52,7 @@ def db_session(app: FastAPI) -> Generator[SessionTesting, Any, None]:
     connection.close()
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope="function")
 def client(app: FastAPI, db_session: SessionTesting) -> Generator[TestClient, Any, None]:
     def _get_test_db():
         try:
