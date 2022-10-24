@@ -32,3 +32,6 @@ seedir
 
 # for authentication
 python-jose
+
+# for access form data
+python-multipart
